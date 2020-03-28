@@ -1,0 +1,29 @@
+#!/usr/bin/env python3
+
+import os
+import re
+
+from tools.editor.zsh_editor import ZshEditor
+from tools.command_parser import Parser
+
+parser = Parser()
+args = parser.get_args()
+
+editor = ZshEditor()
+
+if args.theme != None:
+	editor.theme_editor.set_theme(args.theme)
+elif args.default == True:
+	editor.restore_defaults()
+elif args.alias == True:
+	if args.delete == True:
+		alias = input("Alias: ").strip()
+		editor.alias_editor.delete_alias(alias)
+	elif args.clear:
+		editor.alias_editor.clear_all_aliases()
+	else:
+		alias = input("Alias: ").strip()
+		command = input("Command: ").strip()
+		editor.alias_editor.set_alias(alias,command)
+else:
+	editor.open_editor()
